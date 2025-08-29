@@ -1,9 +1,20 @@
-import { Module } from '@nestjs/common';
+import { min } from 'class-validator';
+import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
+import { LoggerMiddleware } from './logger/logger.middleware';
+import path from 'path';
 
 @Module({
   controllers: [UsersController],
   providers: [UsersService]
 })
-export class UsersModule {}
+export class UsersModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+    .apply(LoggerMiddleware)
+    .forRoutes(
+      {path: "/users", method:RequestMethod.GET}
+    )
+  }
+}

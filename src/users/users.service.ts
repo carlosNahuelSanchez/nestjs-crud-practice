@@ -1,3 +1,4 @@
+import { createUserDto } from './dto/create-user.dto';
 import { Injectable } from '@nestjs/common';
 import { Interface } from 'readline';
 
@@ -12,5 +13,15 @@ export class UsersService {
 
     getUsers() {
         return this.users;
+    }
+
+    createUser(user: createUserDto) {
+
+        this.users.push({...user, id: this.users.length + 1});
+
+        return {
+            ...user,
+            id: this.users.length + 1
+        };
     }
 }
